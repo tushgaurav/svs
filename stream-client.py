@@ -4,7 +4,8 @@ import numpy as np
 from threading import Thread
 import time
 
-CLOUD_SERVER = "https://your-vm-ip:5000"  # Replace with your VM's IP
+CLOUD_SERVER = "http://52.66.214.154:5000"  # Replace with your VM's IP
+
 
 class WebcamStreamer:
     def __init__(self, camera_id, endpoint):
@@ -18,8 +19,8 @@ class WebcamStreamer:
             if ret:
                 _, img_encoded = cv2.imencode('.jpg', frame)
                 try:
-                    requests.post(f"{CLOUD_SERVER}/{self.endpoint}", 
-                                 files={"frame": img_encoded.tobytes()})
+                    requests.post(f"{CLOUD_SERVER}/{self.endpoint}",
+                                  files={"frame": img_encoded.tobytes()})
                 except requests.RequestException as e:
                     print(f"Error streaming to {self.endpoint}: {e}")
             time.sleep(0.1)  # Adjust based on desired frame rate
@@ -31,13 +32,14 @@ class WebcamStreamer:
         self.running = False
         self.camera.release()
 
+
 if __name__ == "__main__":
     streamer1 = WebcamStreamer(0, "upload1")
-    streamer2 = WebcamStreamer(1, "upload2")
-    
+    streamer2 = WebcamStreamer(4, "upload2")
+
     streamer1.start()
     streamer2.start()
-    
+
     try:
         while True:
             time.sleep(1)
